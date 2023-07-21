@@ -14,13 +14,13 @@ const tredingFood = [
   {
     id: 3,
     currency: 'Blog',
-    image: require('../../assets/iconfood.png'),
+    image: require('../../assets/blogfood.jpg'),
     hot: 'HOT!',
   },
   {
     id: 4,
     currency: 'Shoping',
-    image: require('../../assets/iconfood.png'),
+    image: require('../../assets/shoppingfood.jpg'),
     hot: 'HOT!',
   },
 ]

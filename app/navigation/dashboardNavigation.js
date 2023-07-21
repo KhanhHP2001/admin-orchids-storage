@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../config/colors'
 import DashboardHomeScreen2 from '../screens/DashboardHomeScreen2'
 import UserList from '../screens/UserList'
+import FoodList from '../screens/FoodList'
+import IngredientList from '../screens/IngredientList'
 
 const Tab = createBottomTabNavigator()
 
@@ -30,11 +32,33 @@ const DashboardNavigation = () => {
         }}
       />
       <Tab.Screen
+        name="FoodsScreen"
+        component={FoodList}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="fastfood" color={color} size={28} />
+          ),
+          tabBarStyle: { backgroundColor: colors.graylight, borderTopWidth: 0 },
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="IngredientsScreen"
+        component={IngredientList}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="shopping-bag" color={color} size={28} />
+          ),
+          tabBarStyle: { backgroundColor: colors.graylight, borderTopWidth: 0 },
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
         name="UserList"
         component={UserList}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="shopping-cart" color={color} size={28} />
+            <Icon name="person" color={color} size={28} />
           ),
           tabBarStyle: { backgroundColor: colors.graylight, borderTopWidth: 0 },
           headerShown: false,

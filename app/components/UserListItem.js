@@ -20,35 +20,42 @@ const UserListItem = () => {
   useEffect(() => {
     getUserListData()
   }, [])
-  let statusTextColor = userListData.status === 'Active' ? 'red' : 'green'
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('EditUserList', { userId: item.user_id })
-      }
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 10,
-      }}
-    >
-      <Image
-        source={{ uri: item.avatar }}
-        style={{ width: 30, height: 30, borderRadius: 10 }}
-      />
-      <View style={{ flex: 1, marginLeft: 10 }}>
-        <Text style={{ fontWeight: 'bold' }}>{item.user_name}</Text>
-        <Text>{item?.user_role?.role_name}</Text>
-      </View>
-      {/* Active */}
-      <View
-        style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}
-      >
-        <Text style={{ color: statusTextColor }}>{item.status}</Text>
-      </View>
-    </TouchableOpacity>
-  )
 
+  const renderItem = ({ item }) => {
+    let statusTextColor =
+      item.status && (item.status === 'Active' || item.status === 'Deactive')
+        ? item.status === 'Active'
+          ? 'green'
+          : 'red'
+        : 'black'
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('EditUserList', { userId: item.user_id })
+        }
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingVertical: 10,
+        }}
+      >
+        <Image
+          source={{ uri: item.avatar }}
+          style={{ width: 30, height: 30, borderRadius: 10 }}
+        />
+        <View style={{ flex: 1, marginLeft: 10 }}>
+          <Text style={{ fontWeight: 'bold' }}>{item.user_name}</Text>
+          <Text>{item?.user_role?.role_name}</Text>
+        </View>
+        {/* Active */}
+        <View
+          style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}
+        >
+          <Text style={{ color: statusTextColor }}>{item.status}</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
   return (
     <View
       style={{

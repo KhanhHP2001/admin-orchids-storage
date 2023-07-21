@@ -10,6 +10,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import { Ionicons } from '@expo/vector-icons'
 import SPACING from '../config/SPACING'
 import colors from '../config/colors'
@@ -20,6 +21,31 @@ const EditUserList = ({ navigation, route }) => {
   const { userId } = route.params
 
   const [dataUser, setDataUser] = useState()
+  const [dataUserById, setdataUserById] = useState()
+  const [roles, setRoles] = useState([])
+  const [selectedRole, setSelectedRole] = useState(
+    dataUserById?.user_role.role_name
+  )
+  const [status, setStatus] = useState(dataUserById?.status || 'Active')
+
+  const getRoles = async () => {
+    try {
+      const response = await axiosInstance.get('/roles')
+      setRoles(response?.data?.roles?.rows || [])
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getDataUserById = async (userId) => {
+    try {
+      const res = await axiosInstance.get(`/users/${userId}`)
+      console.log(res?.data)
+      setdataUserById(res.data.user)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getDataUser = async () => {
     const data = await AsyncStorage.getItem('userData')
@@ -29,24 +55,22 @@ const EditUserList = ({ navigation, route }) => {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await axiosInstance.put('/users/profile', {
-        user_id: dataUser?.user?.user_id,
-        user_name: dataUser?.user?.user_name,
-        avatar: dataUser?.user?.avatar,
-        birthday: dataUser?.user?.birthday,
-        phone: dataUser?.user?.phone,
-        address: dataUser?.user?.address,
+      const response = await axiosInstance.put('/users', {
+        user_id: dataUserById?.user_id,
+        role_id: dataUserById?.user_role.role_id,
+        status: status,
       })
-
+      setdataUserById(response.data.user)
       console.log(response?.data)
     } catch (error) {
       console.log(error)
     }
   }
   useEffect(() => {
-    console.log(userId)
-    getDataUser()
-  }, [])
+    if (userId) {
+      getDataUserById(userId), getDataUser(), getRoles()
+    }
+  }, [userId])
 
   return (
     <SafeAreaView
@@ -86,7 +110,7 @@ const EditUserList = ({ navigation, route }) => {
         >
           <TouchableOpacity>
             <Image
-              source={{ uri: dataUser?.user?.avatar }}
+              source={{ uri: dataUserById?.avatar }}
               style={{
                 height: 150,
                 width: 150,
@@ -108,6 +132,7 @@ const EditUserList = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
         </View>
+
         <View>
           <View
             style={{
@@ -116,7 +141,7 @@ const EditUserList = ({ navigation, route }) => {
               marginLeft: 30,
             }}
           >
-            <Text style={{ fontSize: SPACING * 1.5 }}>Name</Text>
+            <Text style={{ fontSize: SPACING * 1.5 }}>Role</Text>
             <View
               style={{
                 height: 43,
@@ -129,15 +154,29 @@ const EditUserList = ({ navigation, route }) => {
                 paddingLeft: 8,
               }}
             >
-              <TextInput
-                value={dataUser?.user?.user_name}
+              <Picker
+                selectedValue={selectedRole}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedRole(itemValue)
+                }
+              >
+                {roles.map((role) => (
+                  <Picker.Item
+                    key={role.role_id}
+                    label={role.role_name}
+                    value={role.role_name}
+                  />
+                ))}
+              </Picker>
+              {/* <TextInput
+                value={dataUserById?.user_role.role_name}
                 onChangeText={(text) => {
                   setDataUser((prevData) => ({
                     ...prevData,
-                    user: { ...prevData.user, user_name: text },
+                    user: { ...prevData.user, role_name: text },
                   }))
                 }}
-              />
+              /> */}
             </View>
           </View>
 
@@ -148,7 +187,7 @@ const EditUserList = ({ navigation, route }) => {
               marginLeft: 30,
             }}
           >
-            <Text style={{ fontSize: SPACING * 1.5 }}>Email</Text>
+            <Text style={{ fontSize: SPACING * 1.5 }}>Status</Text>
             <View
               style={{
                 height: 44,
@@ -161,111 +200,13 @@ const EditUserList = ({ navigation, route }) => {
                 paddingLeft: 8,
               }}
             >
-              <TextInput
-                value={dataUser?.user?.email}
-                onChangeText={(text) => {
-                  setDataUser((prevData) => ({
-                    ...prevData,
-                    user: { ...prevData.user, email: text },
-                  }))
-                }}
-              />
-            </View>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'column',
-              marginBottom: 6,
-              marginLeft: 30,
-            }}
-          >
-            <Text style={{ fontSize: SPACING * 1.5 }}>Date of Birth</Text>
-            <View
-              style={{
-                height: 44,
-                width: '90%',
-                borderColor: colors.grey,
-                borderWidth: 1,
-                borderRadius: 4,
-                marginVertical: 6,
-                justifyContent: 'center',
-                paddingLeft: 8,
-              }}
-            >
-              <TextInput
-                value={dataUser?.user?.birthday}
-                onChangeText={(text) => {
-                  setDataUser((prevData) => ({
-                    ...prevData,
-                    user: { ...prevData.user, birthday: text },
-                  }))
-                }}
-              />
-            </View>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'column',
-              marginBottom: 6,
-              marginLeft: 30,
-            }}
-          >
-            <Text style={{ fontSize: SPACING * 1.5 }}>Phone Number</Text>
-            <View
-              style={{
-                height: 44,
-                width: '90%',
-                borderColor: colors.grey,
-                borderWidth: 1,
-                borderRadius: 4,
-                marginVertical: 6,
-                justifyContent: 'center',
-                paddingLeft: 8,
-              }}
-            >
-              <TextInput
-                value={dataUser?.user?.phone}
-                onChangeText={(text) => {
-                  setDataUser((prevData) => ({
-                    ...prevData,
-                    user: { ...prevData.user, phone: text },
-                  }))
-                }}
-              />
-            </View>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'column',
-              marginBottom: 6,
-              marginLeft: 30,
-            }}
-          >
-            <Text style={{ fontSize: SPACING * 1.5 }}>Adress</Text>
-            <View
-              style={{
-                height: 44,
-                width: '90%',
-                borderColor: colors.grey,
-                borderWidth: 1,
-                borderRadius: 4,
-                marginVertical: 6,
-                justifyContent: 'center',
-                paddingLeft: 8,
-              }}
-            >
-              <TextInput
-                value={dataUser?.user?.address}
-                onChangeText={(text) => {
-                  setDataUser((prevData) => ({
-                    ...prevData,
-                    user: { ...prevData.user, address: text },
-                  }))
-                }}
-              />
+              <Picker
+                selectedValue={status}
+                onValueChange={(itemValue, itemIndex) => setStatus(itemValue)}
+              >
+                <Picker.Item label="Active" value="Active" />
+                <Picker.Item label="Deactive" value="Deactive" />
+              </Picker>
             </View>
           </View>
 
@@ -277,7 +218,7 @@ const EditUserList = ({ navigation, route }) => {
               borderRadius: 6,
               alignItems: 'center',
               justifyContent: 'center',
-              marginLeft: 30,
+              marginLeft: 38,
               marginVertical: 20,
             }}
             onPress={handleSaveChanges}

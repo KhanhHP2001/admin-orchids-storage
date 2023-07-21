@@ -145,8 +145,12 @@ const DashboardHomeScreen2 = ({ navigation }) => {
               justifyContent: 'center',
             }}
           >
-            <Text>Wellcome to Dashboard</Text>
-            <Text>Have a good time with App</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+              Wellcome to Dashboard
+            </Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+              Have a good time with App
+            </Text>
             <Text></Text>
           </View>
           {/* treding */}
