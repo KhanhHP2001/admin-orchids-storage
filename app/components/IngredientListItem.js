@@ -30,7 +30,7 @@ const IngredientListItem = () => {
       }}
     >
       <Image
-        source={{ uri: item.ingredient_image[0]?.image }}
+        source={{ uri: item?.ingredient_image[0]?.image }}
         style={{ width: 30, height: 30, borderRadius: 10 }}
       />
       <View style={{ flex: 1, marginLeft: 10 }}>
@@ -41,7 +41,7 @@ const IngredientListItem = () => {
       <View
         style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}
       >
-        <Text>{item?.ingredient_store?.store_user.user_name}</Text>
+        <Text>{item?.price} vnd</Text>
       </View>
     </TouchableOpacity>
   )
