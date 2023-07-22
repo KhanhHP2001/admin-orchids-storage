@@ -136,7 +136,7 @@ const EditUserList = ({ navigation, route }) => {
         </View>
 
         <View>
-          <View
+          {/* <View
             style={{
               flexDirection: 'column',
               marginBottom: 6,
@@ -170,7 +170,7 @@ const EditUserList = ({ navigation, route }) => {
                   />
                 ))}
               </Picker>
-              {/* <TextInput
+              <TextInput
                 value={dataUserById?.user_role.role_name}
                 onChangeText={(text) => {
                   setDataUser((prevData) => ({
@@ -178,9 +178,9 @@ const EditUserList = ({ navigation, route }) => {
                     user: { ...prevData.user, role_name: text },
                   }))
                 }}
-              /> */}
+              />
             </View>
-          </View>
+          </View> */}
 
           <View
             style={{

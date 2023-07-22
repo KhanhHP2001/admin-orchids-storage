@@ -112,7 +112,10 @@ const DashboardHomeScreen2 = ({ navigation }) => {
       console.log(error)
     }
   }
-
+  const navigateToLogin = () => {
+    logout()
+    navigation.navigate('LoginScreen')
+  }
   const getUserData = async () => {
     try {
       const res = await axiosInstance.get(`/users`)
@@ -344,7 +347,7 @@ const DashboardHomeScreen2 = ({ navigation }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              onPress={() => {handleLogout(), navigation.navigate('LoginScreen')}}
+              onPress={() => navigateToLogin()}
             >
               <Ionicons
                 name="power"
