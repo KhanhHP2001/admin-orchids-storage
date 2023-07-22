@@ -67,28 +67,28 @@ export const AuthProvider = ({ children }) => {
       })
   }
 
-  // const logout = () => {
-  //     setIsLoading(true);
+  const logout = () => {
+      setIsLoading(true);
 
-  //     axios
-  //         .post(
-  //             `${BASE_URL}/logout`,
-  //             {},
-  //             {
-  //                 headers: { Authorization: `Bearer ${userInfo.access_token}` },
-  //             },
-  //         )
-  //         .then(res => {
-  //             console.log(res.data);
-  //             AsyncStorage.removeItem('userInfo');
-  //             setUserInfo({});
-  //             setIsLoading(false);
-  //         })
-  //         .catch(e => {
-  //             console.log(`logout error ${e}`);
-  //             setIsLoading(false);
-  //         });
-  // };
+      axios
+          .post(
+              `${BASE_URL}/logout`,
+              {},
+              {
+                  headers: { Authorization: `Bearer ${userInfo.access_token}` },
+              },
+          )
+          .then(res => {
+              console.log(res.data);
+              AsyncStorage.removeItem('userInfo');
+              setUserInfo({});
+              setIsLoading(false);
+          })
+          .catch(e => {
+              console.log(`logout error ${e}`);
+              setIsLoading(false);
+          });
+  };
 
   //   const isLoggedIn = async () => {
   //     try {
@@ -145,6 +145,7 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         getFood,
+        logout
       }}
     >
       {children}
