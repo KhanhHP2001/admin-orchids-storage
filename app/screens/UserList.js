@@ -27,6 +27,22 @@ const UserList = ({ navigation }) => {
   const isFocused = useIsFocused()
   const [userInfo, setUserInfo] = useState({})
 
+  useFocusEffect(
+    React.useCallback(() => {
+      // Add listener for tab press
+      const unsubscribe = navigation.addListener('tabPress', (e) => {
+        // Prevent default behavior of tab press
+        e.preventDefault()
+        // Reset the navigation state to the initial route of the stack
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'UserList' }],
+        })
+      })
+      // Cleanup the listener when the screen loses focus or unmounts
+      return unsubscribe
+    }, [])
+  )
   const getUserFromStorage = async () => {
     try {
       const user = await AsyncStorage.getItem('userData')

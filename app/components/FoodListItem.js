@@ -34,7 +34,7 @@ const FoodListItem = () => {
       }}
     >
       <Image
-        source={{ uri: item.food_image[0]?.image }}
+        source={{ uri: item?.food_image[0]?.image }}
         style={{ width: 30, height: 30, borderRadius: 10 }}
       />
       <View style={{ flex: 1, marginLeft: 10 }}>

@@ -19,8 +19,8 @@ import axiosInstance from '../../util/axiosWrapper'
 
 const EditUserList = ({ navigation, route }) => {
   const { userId } = route.params
-
   const [dataUser, setDataUser] = useState()
+  const [isLoading, setIsLoading] = useState(false)
   const [dataUserById, setdataUserById] = useState()
   const [roles, setRoles] = useState([])
   const [selectedRole, setSelectedRole] = useState(
@@ -60,12 +60,14 @@ const EditUserList = ({ navigation, route }) => {
         role_id: dataUserById?.user_role.role_id,
         status: status,
       })
-      setdataUserById(response.data.user)
+      setIsLoading(false)
+      navigation.goBack()
       console.log(response?.data)
     } catch (error) {
       console.log(error)
     }
   }
+
   useEffect(() => {
     if (userId) {
       getDataUserById(userId), getDataUser(), getRoles()

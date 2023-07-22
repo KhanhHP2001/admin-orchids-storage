@@ -24,6 +24,7 @@ import { SearchBlogsScreen } from './app/screens/SearchBlogsScreen'
 import Setting from './app/screens/Setting'
 import UserList from './app/screens/UserList'
 import EditUserList from './app/screens/EditUserList'
+import UserListItem from './app/components/UserListItem'
 
 AsyncStorage.removeItem('userData')
 
@@ -115,6 +116,7 @@ const App = () => {
                 <Stack.Screen name="BlogDetail" component={BlogDetailScreen} />
                 <Stack.Screen name="Setting" component={Setting} />
                 <Stack.Screen name="UserList" component={UserList} />
+                <Stack.Screen name="UserListItem" component={UserListItem} />
                 <Stack.Screen name="EditUserList" component={EditUserList} />
               </Stack.Navigator>
             </>

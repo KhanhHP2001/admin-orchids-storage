@@ -1,25 +1,51 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import colors from '../config/colors'
 import axiosInstance from '../../util/axiosWrapper'
-import { useNavigation } from '@react-navigation/native'
+import {
+  useNavigation,
+  useFocusEffect,
+  useIsFocused,
+} from '@react-navigation/native'
+import { AuthContext } from '../context/AuthContext'
 
 const UserListItem = () => {
   const navigation = useNavigation()
+  const isFocused = useIsFocused()
+  useFocusEffect(
+    React.useCallback(() => {
+      // Add listener for tab press
+      const unsubscribe = navigation.addListener('tabPress', (e) => {
+        // Prevent default behavior of tab press
+        e.preventDefault()
+
+        // Reset the navigation state to the initial route of the stack
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'UserListItem' }],
+        })
+      })
+      // Cleanup the listener when the screen loses focus or unmounts
+      return unsubscribe
+    }, [])
+  )
+  const { isLoading } = useContext(AuthContext)
   const [userListData, setUserListData] = useState([])
 
   const getUserListData = async () => {
     try {
       const res = await axiosInstance.get(`/users`)
       setUserListData(res?.data?.user_paging?.rows)
-      console.log(res?.data?.user_paging?.rows)
     } catch (error) {
       console.log(error)
     }
   }
+
   useEffect(() => {
-    getUserListData()
-  }, [])
+    setTimeout(() => {
+      getUserListData()
+    }, 6000)
+  }, [isFocused])
 
   const renderItem = ({ item }) => {
     let statusTextColor =
